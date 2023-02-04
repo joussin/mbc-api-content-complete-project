@@ -23,9 +23,10 @@ class AppServiceProvider extends ServiceProvider
      *
      * @return void
      */
-    public function boot(ApplicationMbcApiContent $applicationMbcApiContentInstance)
+    public function boot()
     {
-        $applicationMbcApiContentInstance->init();
+//        ApplicationMbcApiContent $applicationMbcApiContentInstance
+//        $applicationMbcApiContentInstance->init();
 
         //        $paths = RouterFacade::getRoutesLaravelCollection()->getDefaults();
     }

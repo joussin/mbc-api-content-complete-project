@@ -16,15 +16,15 @@ class ApiContentRouteServiceProvider extends ServiceProvider
     public function boot()
     {
 
-        $config = config('mbc_api_content_config');
-
-        $apiPrefix = $config['api']['routes']['prefix'] ?? 'api';
-
-        $this->routes(function () use($apiPrefix) {
-            Route::middleware('api')
-                ->prefix($apiPrefix)
-                ->group(__DIR__.'/../../../../'  . 'routes/api.php');
-        });
+//        $config = config('mbc_api_content_config');
+//
+//        $apiPrefix = $config['api']['routes']['prefix'] ?? 'api';
+//
+//        $this->routes(function () use($apiPrefix) {
+//            Route::middleware('api')
+//                ->prefix($apiPrefix)
+//                ->group(__DIR__.'/../../../../'  . 'routes/api.php');
+//        });
     }
 
 

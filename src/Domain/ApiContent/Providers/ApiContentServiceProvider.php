@@ -42,10 +42,17 @@ class ApiContentServiceProvider extends ServiceProvider
 
         $this->app->singleton(MigrationServiceInterface::class, MigrationService::class);
 
-        $this->mergeConfigFrom(
-            file_exists( config_path('mbc-api-content-config.php') ) ? config_path('mbc-api-content-config.php') : (__DIR__ . './../../../config/mbc-api-content-config.php') ,
-            'mbc_api_content_config'
-        );
+
+
+
+
+        $path = base_path('mbc_api_content/') ;
+
+
+//        $this->mergeConfigFrom(
+//            file_exists( config_path('mbc-api-content-config.php') ) ? config_path('mbc-api-content-config.php') :  ($path . 'config/mbc-api-content-config.php') ,
+//            'mbc_api_content_config'
+//        );
 
     }
 
@@ -58,26 +65,35 @@ class ApiContentServiceProvider extends ServiceProvider
     {
         JsonResource::withoutWrapping();
 
-        $this->loadViewsFrom(__DIR__.'/../../../resources/views', 'api_content_views'); // return view('api_content_views::dashboard');
 
-        $this->loadMigrationsFrom(__DIR__.'/../../../database/migrations');
+
+        $path = base_path('mbc_api_content/') ;
+
+//        dd(
+//            $path . 'resources/views'
+//        );
+
+        $this->loadViewsFrom($path . 'resources/views', 'api_content_views'); // return view('api_content_views::dashboard');
+
+        $this->loadMigrationsFrom($path . 'database/migrations');
+
 
         if ($this->app->runningInConsole()) {
 
             try{
 
-                $this->publishes([
-                    __DIR__.'/../../../config/mbc-api-content-config.php' => config_path('mbc-api-content-config.php'),
-                ]);
-
-                $this->publishes([
-                    __DIR__.'/../../../public/api/' => public_path('api/'),
-                ]);
-
-
-                $this->publishes([
-                    __DIR__.'/../../../resources/views/' => resource_path('views/vendor/api_content_views/'),
-                ]);
+//                $this->publishes([
+//                    $path . 'config/mbc-api-content-config.php' => config_path('mbc-api-content-config.php'),
+//                ]);
+//
+//                $this->publishes([
+//                    $path . 'public/api/' => public_path('api/'),
+//                ]);
+//
+//
+//                $this->publishes([
+//                    $path . 'resources/views/' => resource_path('views/vendor/api_content_views/'),
+//                ]);
 
             }
             catch (\Exception $e)

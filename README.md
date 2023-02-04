@@ -1,66 +1,298 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
 
-## About Laravel
+\MbcApiContent\Application\MbcApiContentProvider::class
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+# Mbc api content
 
-## Learning Laravel
+[//]: # ([![Latest Version on Packagist]&#40;https://img.shields.io/packagist/v/spatie/laravel-export.svg?style=flat-square&#41;]&#40;https://packagist.org/packages/spatie/laravel-export&#41;)
+[//]: # ([![Total Downloads]&#40;https://img.shields.io/packagist/dt/spatie/laravel-export.svg?style=flat-square&#41;]&#40;https://packagist.org/packages/spatie/laravel-export&#41;)
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+```bash
+php artisan vendor:publish --provider=MbcApiContent\\\Providers\\MainServiceProvider
+```
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains over 2000 video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+## Configuration
 
-## Laravel Sponsors
+Secrets DB conf.
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the Laravel [Patreon page](https://patreon.com/taylorotwell).
+```php
+// .env
 
-### Premium Partners
+DB_CONNECTION=mysql
+DB_DATABASE=cms_headless
+DB_HOST=192.168.0.21
+DB_PORT=3094
+DB_USERNAME=root
+DB_PASSWORD=
+```
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Cubet Techno Labs](https://cubettech.com)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[Many](https://www.many.co.uk)**
-- **[Webdock, Fast VPS Hosting](https://www.webdock.io/en)**
-- **[DevSquad](https://devsquad.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[OP.GG](https://op.gg)**
-- **[WebReinvent](https://webreinvent.com/?utm_source=laravel&utm_medium=github&utm_campaign=patreon-sponsors)**
-- **[Lendio](https://lendio.com)**
+#### Boot app
 
-## Contributing
+Boot app : migrate db before
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+```php
+use Illuminate\Support\ServiceProvider;use MbcApiContent\Application\ApplicationMbcApiContent;
+    
+    class AppServiceProvider extends ServiceProvider
+    {
+        public function boot(ApplicationMbcApiContent $bootstrap)
+        {
+       
+            $bootstrap->init();
+            
+            $paths = RouterFacade::getRoutesDatasForExporter();
+        
+            $exporter->paths($paths);
 
-## Code of Conduct
+        }
+    }
+```
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+## Facades
 
-## Security Vulnerabilities
+RouterFacade
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+```php
+use MbcApiContent\Domain\Router\Facades\RouterFacade;
 
-## License
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+$request = request();
+
+$routesModelsCollection = RouterFacade::getRoutesModelCollection();
+$routesLaravelCollection = RouterFacade::getRoutesLaravelCollection();
+$routesFrameworkCollection = RouterFacade::getRoutesFrameworkCollection();
+
+
+$laravelRoute = RouterFacade::getLaravelRoute();
+$routeModel = RouterFacade::getRouteModel();
+$pageModel = RouterFacade::getPageModel();
+
+$pageContents = RouterFacade::getPageContentModels();
+$pageContent = RouterFacade::getPageContentModelByName('content_no_1');
+$exporterDatas = RouterFacade::getRoutesDatasForExporter();
+
+```
+
+## Database
+
+migrate all:
+``` bash
+php artisan migrate:refresh --path=/vendor/joussin/mbc-api-content-as-package/Database/migrations/
+```
+migrate by filename:
+``` bash
+php artisan migrate:refresh --path=/vendor/joussin/mbc-api-content-as-package/Database/migrations/2023_01_04_213240_create_route_table.php
+```
+
+rollback:
+``` bash
+php artisan migrate:rollback
+php artisan migrate:rollback --step=1
+php artisan migrate:reset
+```
+
+
+## Liste des routes:
+``` bash
+php artisan route:list  
+php artisan route:list --except-vendor
+```
+
+## Test
+
+Launch server
+``` bash
+php artisan serve --port=8000
+```
+
+SWAGGER
+``` bash
+http://127.0.0.1:8000/docs/api/index.html
+```
+
+BACKOFFICE
+``` bash
+http://127.0.0.1:8000/backoffice
+```
+
+
+
+## Event
+
+You can create Laravel Event with Listener event.
+
+But if you want to use ApiContent Event who are automaticaly handle, you must implements ApiContentEventInterface.
+Interface obliges you to declare and implement callback method.
+This method is called when event are dispatched and then handled.
+This method allow pass args or not.
+This method allow return something or not.
+
+By default, there is only one Event which is called when Models change, and get model properties like:
+
+$event->getModelInstance() : eloquent model instance
+$event->getAction() : action name list ModelChangedEvent::MODEL_ACTIONS
+$event->getModelClass() : eloquent model class name
+$event->getCallbackMethodName() : le nom de la method du model sera appelé en callback de l'event
+
+create Event:
+```php
+class CustomEvent extends BaseEvent
+{
+    public function callback(mixed $callbackArgs = null) : mixed
+    {}
+}
+```
+or
+```php
+class CustomEvent implements ApiContentEventInterface
+{
+    use Dispatchable, InteractsWithSockets, SerializesModels;
+    
+    public function callback(mixed $callbackArgs = null) : mixed
+    {}
+}
+```
+
+Listener:
+```php
+MbcApiContent\Events\ApiContentEventListenerResolver
+```        
+
+Event Dispatched callback:
+
+```php
+\MbcApiContent\Domain\ApiContent\Events\ApiContentEventListener::eventClosure
+```
+
+Dispatch event:
+```php
+event(new CustomEvent());
+```
+
+
+Listener init:
+```php
+Bootstrap->apiContentEventListener->initListener(bool $modelsObservables)
+```
+
+
+
+Model are listen ? :
+```php
+Bootstrap->apiContentEventListener->isModelsObservables(): bool
+```
+
+set Model listened or not  :
+```php
+Bootstrap->apiContentEventListener->setModelsObservables(bool $observeModel): void
+```
+
+
+Add other event Closure: Listener Callback
+```php
+/**
+ * @param \Closure $eventClosure : function(ApiContentEventInterface $event){};
+ * @return void
+ */ 
+Bootstrap->apiContentEventListener->addEventClosureToList(\Closure $eventClosure): void
+```
+
+
+
+## DOCUMENTATION
+
+
+
+Le projet est divisé en 3 sous projets:
+
+    - Api
+    - Router
+    - Backoffice
+
+
+
+
+
+Api:
+
+    1/ Api REST permettant la gestion de resources modélisant un site web: de son accès à son contenu:
+
+        - Route:
+            Model correspondant à une route laravel modelisé
+
+        - Page:
+            Model correspondant à un page html censé etre rendu si une Route est appelé
+
+        - PageContent:
+            Model correspondant aux différents contenus de cette page sous forme de texte brut.
+
+
+    2/ L'api permet de faire un crud sur chaque resource:
+
+            - search : GET /{resource}/search?column=name&column_value=route-name : ResourceObject|ResourceObjectCollection        
+            - list : GET /{resource} : ResourceObjectCollection
+            - show : GET /{resource}/{resource_id} : ResourceObject
+            - create : POST /{resource} : ResourceObject
+            - edit : PUT /{resource}/{resource_id} : ResourceObject
+            - delete : DELETE /{resource}/{resource_id} : bool
+
+    3/ Une fois la DB remplies:
+            
+            - une Collection de Route: 
+                    - RouteCollection : correspondant à la liste des routes/urls du site. 
+                    - Une ResourceObject Route possedant une URL et une ResourceObject Page 
+
+            - Une Collection de Page où chaque Page est associée à une Route
+                    - chaque Page repésentant la page web d'une url
+                    - chaque Page posséde un template_name (modele de la page) et une Collection PageContent correspondant à l'ensemble des textes de la page
+
+            - Une Collection PageContent associée à une Page
+                    - L'idée est de générer la Page grace au template_name (forme) et à  Collection PageContent (contenu)
+
+
+
+    4/ L'api ne représente que la modélisation et les données d'un site.
+       L'idée est que un site web statique soit susceptible d'être créé via ces données.
+       Un générateur de site doit être créé, il doit être capable de résoudre ces problématiques:
+
+        - Exposer la liste RouteCollection représentant les RouteModel de la BDD
+        - Recevoir des requetes et matcher via une url à quelle RouteModel cela correspond
+        - Récupérer la PageModel correspondant à la RouteModel
+        - Générer la page html via PageModel->template_name (présentation) et PageContent Collection (contenu)
+        - Retourner une response http sous forme de html
+
+
+Router:
+
+    Le sous projet router doit répondre à la problématique précédente.
+
+    1/ Récupérer RouteCollection et l'exposer sur le web avec laravel
+        - créer des routes Laravel avec RouteModel et les ajouter au Router laravel
+        - le Router laravel va se charger de matcher ces routes, à nous de relier route laravel & route model
+    
+
+    2/ relier route laravel & route model
+        pour cela on ajoute un id à chaque route laravel et chaque model route lors de l'ajout au Router 
+
+    3/ intercepter la requete associé à la route et retourner une reponse personalisé
+        pour cela on a ajouté ces routes dans le router de laravel  avec un RouterMiddleware.
+        RouterMiddleware : handle server request et peut retourner une response html.
+
+    4/ générer la réponse html souhaité
+        Obtenir la PageModel par relation : url -> route laravel -> RouteModel -> PageModel
+        PageModel :  template_name & PageContentCollection
+        générer la reponse html avec le blade template name et les PageContent:  Template ( blade template_name html ) + PageContent Collection
+        retourner la response html
+
+
+
+
+Backoffice:
+
+    1/ interface graphique permettant de gérer les données des resources en BDD
+    2/ plusieurs types de personnes peuvent modifier ces données
+            plusieurs roles
+

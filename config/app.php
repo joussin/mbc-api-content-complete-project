@@ -1,6 +1,9 @@
 <?php
 
 use Illuminate\Support\Facades\Facade;
+use MbcApiContent\Domain\ApiContent\Providers\ApiContentServiceProvider;
+use MbcApiContent\Domain\BackOffice\Providers\BackOfficeServiceProvider;
+use MbcApiContent\Domain\Router\Providers\ApiContentRouterServiceProvider;
 
 return [
 
@@ -197,7 +200,14 @@ return [
 
 
 
-        \MbcApiContent\Application\MbcApiContentProvider::class
+//        \MbcApiContent\Application\MbcApiContentProvider::class
+
+
+        ApiContentServiceProvider::class,
+
+//          $this->app->register(ApiContentServiceProvider::class)
+//        $this->app->register(ApiContentRouterServiceProvider::class);
+//        $this->app->register(BackOfficeServiceProvider::class);
     ],
 
     /*
