@@ -26,6 +26,6 @@ class AppServiceProvider extends ServiceProvider
     public function boot(ApiContentBootstrap $apiContentBootstrap)
     {
         // start apiContent
-        //        $apiContentBootstrap->init();
+        $apiContentBootstrap->init(true, true);
     }
 }

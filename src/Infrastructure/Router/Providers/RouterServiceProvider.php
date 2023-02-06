@@ -35,6 +35,6 @@ class RouterServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-
+        $this->loadViewsFrom(resource_path('views/'), 'mbc_api_content');
     }
 }

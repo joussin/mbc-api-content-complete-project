@@ -8,7 +8,6 @@ use MbcApiContent\Application\Install\Providers\ApplicationInstallProvider;
 use MbcApiContent\Application\ApiContentBootstrap;
 use MbcApiContent\Infrastructure\Api\Providers\ApiServiceProvider;
 use MbcApiContent\Infrastructure\BackOffice\Providers\BackOfficeServiceProvider;
-use MbcApiContent\Infrastructure\Render\Providers\RenderServiceProvider;
 use MbcApiContent\Infrastructure\Router\Providers\RouterServiceProvider;
 
 
@@ -53,12 +52,8 @@ class ApplicationProvider extends ServiceProvider
         // Application product : router
         $this->app->register(RouterServiceProvider::class);
 
-        // Application product : Render
-        $this->app->register(RenderServiceProvider::class);
-
-
         // Application product : BackOffice
-        $this->app->register(BackOfficeServiceProvider::class);
+       // $this->app->register(BackOfficeServiceProvider::class);
 
 
 

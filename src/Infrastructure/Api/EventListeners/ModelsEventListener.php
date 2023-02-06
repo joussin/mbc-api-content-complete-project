@@ -23,12 +23,6 @@ class ModelsEventListener implements ModelsEventListenerInterface
      */
     protected ?\Closure $modelEventClosure;
 
-    public function __construct()
-    {
-    }
-
-
-
     //  $this->initListener(); // dans Bootstrap
     public function initListener(bool $modelsObservables = true): void
     {
@@ -59,8 +53,6 @@ class ModelsEventListener implements ModelsEventListenerInterface
             {
                 $this->getModelEventClosure()($event);
             }
-
-
         });
 
     }

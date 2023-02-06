@@ -6,10 +6,10 @@ use Illuminate\Database\Eloquent\Collection as EloquentCollection;
 use Illuminate\Routing\Route as LaravelRoute;
 use Illuminate\Routing\RouteCollectionInterface;
 use Illuminate\Support\Facades\Facade;
-use MbcApiContent\Domain\ApiContent\Models\Collections\ModelRouteCollectionInterface;
-use MbcApiContent\Infrastructure\ApiContent\Models\Page as PageModel;
-use MbcApiContent\Infrastructure\ApiContent\Models\PageContent as PageContentModel;
-use MbcApiContent\Infrastructure\ApiContent\Models\Route as RouteModel;
+use MbcApiContent\Domain\Api\Models\Collections\ModelRouteCollectionInterface;
+use MbcApiContent\Infrastructure\Api\Models\Page as PageModel;
+use MbcApiContent\Infrastructure\Api\Models\PageContent as PageContentModel;
+use MbcApiContent\Infrastructure\Api\Models\Route as RouteModel;
 
 /**
  *
