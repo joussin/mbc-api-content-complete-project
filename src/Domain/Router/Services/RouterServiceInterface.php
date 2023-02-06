@@ -5,10 +5,10 @@ namespace MbcApiContent\Domain\Router\Services;
 use Illuminate\Database\Eloquent\Collection as EloquentCollection;
 use Illuminate\Routing\Route as LaravelRoute;
 use Illuminate\Routing\RouteCollectionInterface;
-use MbcApiContent\Domain\ApiContent\Models\Collections\LaravelRouteCollectionInterface;
-use MbcApiContent\Domain\ApiContent\Models\Page as PageModel;
-use MbcApiContent\Domain\ApiContent\Models\PageContent as PageContentModel;
-use MbcApiContent\Domain\ApiContent\Models\Route as RouteModel;
+use MbcApiContent\Domain\Api\Models\Collections\ModelRouteCollectionInterface;
+use MbcApiContent\Infrastructure\Api\Models\Page as PageModel;
+use MbcApiContent\Infrastructure\Api\Models\PageContent as PageContentModel;
+use MbcApiContent\Infrastructure\Api\Models\Route as RouteModel;
 
 interface RouterServiceInterface
 {
@@ -18,7 +18,7 @@ interface RouterServiceInterface
 
     public function getRoutesFrameworkCollection() : RouteCollectionInterface;
 
-    public function getRoutesLaravelCollection() : LaravelRouteCollectionInterface;
+    public function getRoutesLaravelCollection() : ModelRouteCollectionInterface;
 
     public function getLaravelRoute() : ?LaravelRoute;
 

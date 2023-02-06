@@ -1,21 +1,21 @@
 <?php
 
-namespace App\Providers;
+namespace MbcApiContent\Infrastructure\BackOffice\Providers;
 
 use Illuminate\Support\ServiceProvider;
-use MbcApiContent\Application\ApiContentBootstrap;
 
 
-class AppServiceProvider extends ServiceProvider
+class BackOfficeServiceProvider extends ServiceProvider
 {
+
     /**
+     *
      * Register any application services.
      *
      * @return void
      */
     public function register()
     {
-        //
     }
 
     /**
@@ -23,9 +23,9 @@ class AppServiceProvider extends ServiceProvider
      *
      * @return void
      */
-    public function boot(ApiContentBootstrap $apiContentBootstrap)
+    public function boot()
     {
-        // start apiContent
-        //        $apiContentBootstrap->init();
+
+
     }
 }

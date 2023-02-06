@@ -1,18 +1,7 @@
-
-
-\MbcApiContent\Application\MbcApiContentProvider::class
-
-
-
 # Mbc api content
 
 [//]: # ([![Latest Version on Packagist]&#40;https://img.shields.io/packagist/v/spatie/laravel-export.svg?style=flat-square&#41;]&#40;https://packagist.org/packages/spatie/laravel-export&#41;)
 [//]: # ([![Total Downloads]&#40;https://img.shields.io/packagist/dt/spatie/laravel-export.svg?style=flat-square&#41;]&#40;https://packagist.org/packages/spatie/laravel-export&#41;)
-
-
-```bash
-php artisan vendor:publish --provider=MbcApiContent\\\Providers\\MainServiceProvider
-```
 
 ## Configuration
 
@@ -29,77 +18,61 @@ DB_USERNAME=root
 DB_PASSWORD=
 ```
 
-#### Boot app
+#### Install : Database - Config - Routes - Views - Swagger
 
-Boot app : migrate db before
+## Install:
+
+in app/Providers/AppServiceProvider.php, add :
+``` php
+    'providers' => [
+        ...
+        // api content
+        \MbcApiContent\Application\Providers\ApplicationProvider::class,
+        ...
+     ]
+```
+
+
+``` bash
+php artisan api-content:install
+```
+
+## Uninstall:
+``` bash
+php artisan api-content:uninstall
+```
+
+## Liste des routes:
+``` bash
+php artisan route:list --except-vendor
+```
+
+
+
+#### Boot application
+
+Boot app : install before
 
 ```php
-use Illuminate\Support\ServiceProvider;use MbcApiContent\Application\ApplicationMbcApiContent;
+use Illuminate\Support\ServiceProvider;
+use MbcApiContent\Application\ApiContentBootstrap;
     
     class AppServiceProvider extends ServiceProvider
     {
-        public function boot(ApplicationMbcApiContent $bootstrap)
+        public function boot(ApiContentBootstrap $bootstrap)
         {
        
             $bootstrap->init();
             
-            $paths = RouterFacade::getRoutesDatasForExporter();
-        
-            $exporter->paths($paths);
+//            $paths = RouterFacade::getRoutesDatasForExporter();
+//        
+//            $exporter->paths($paths);
 
         }
     }
 ```
 
-## Facades
 
-RouterFacade
-
-```php
-use MbcApiContent\Domain\Router\Facades\RouterFacade;
-
-
-$request = request();
-
-$routesModelsCollection = RouterFacade::getRoutesModelCollection();
-$routesLaravelCollection = RouterFacade::getRoutesLaravelCollection();
-$routesFrameworkCollection = RouterFacade::getRoutesFrameworkCollection();
-
-
-$laravelRoute = RouterFacade::getLaravelRoute();
-$routeModel = RouterFacade::getRouteModel();
-$pageModel = RouterFacade::getPageModel();
-
-$pageContents = RouterFacade::getPageContentModels();
-$pageContent = RouterFacade::getPageContentModelByName('content_no_1');
-$exporterDatas = RouterFacade::getRoutesDatasForExporter();
-
-```
-
-## Database
-
-migrate all:
-``` bash
-php artisan migrate:refresh --path=/vendor/joussin/mbc-api-content-as-package/Database/migrations/
-```
-migrate by filename:
-``` bash
-php artisan migrate:refresh --path=/vendor/joussin/mbc-api-content-as-package/Database/migrations/2023_01_04_213240_create_route_table.php
-```
-
-rollback:
-``` bash
-php artisan migrate:rollback
-php artisan migrate:rollback --step=1
-php artisan migrate:reset
-```
-
-
-## Liste des routes:
-``` bash
-php artisan route:list  
-php artisan route:list --except-vendor
-```
 
 ## Test
 
@@ -120,89 +93,8 @@ http://127.0.0.1:8000/backoffice
 
 
 
-## Event
 
-You can create Laravel Event with Listener event.
-
-But if you want to use ApiContent Event who are automaticaly handle, you must implements ApiContentEventInterface.
-Interface obliges you to declare and implement callback method.
-This method is called when event are dispatched and then handled.
-This method allow pass args or not.
-This method allow return something or not.
-
-By default, there is only one Event which is called when Models change, and get model properties like:
-
-$event->getModelInstance() : eloquent model instance
-$event->getAction() : action name list ModelChangedEvent::MODEL_ACTIONS
-$event->getModelClass() : eloquent model class name
-$event->getCallbackMethodName() : le nom de la method du model sera appelé en callback de l'event
-
-create Event:
-```php
-class CustomEvent extends BaseEvent
-{
-    public function callback(mixed $callbackArgs = null) : mixed
-    {}
-}
-```
-or
-```php
-class CustomEvent implements ApiContentEventInterface
-{
-    use Dispatchable, InteractsWithSockets, SerializesModels;
-    
-    public function callback(mixed $callbackArgs = null) : mixed
-    {}
-}
-```
-
-Listener:
-```php
-MbcApiContent\Events\ApiContentEventListenerResolver
-```        
-
-Event Dispatched callback:
-
-```php
-\MbcApiContent\Domain\ApiContent\Events\ApiContentEventListener::eventClosure
-```
-
-Dispatch event:
-```php
-event(new CustomEvent());
-```
-
-
-Listener init:
-```php
-Bootstrap->apiContentEventListener->initListener(bool $modelsObservables)
-```
-
-
-
-Model are listen ? :
-```php
-Bootstrap->apiContentEventListener->isModelsObservables(): bool
-```
-
-set Model listened or not  :
-```php
-Bootstrap->apiContentEventListener->setModelsObservables(bool $observeModel): void
-```
-
-
-Add other event Closure: Listener Callback
-```php
-/**
- * @param \Closure $eventClosure : function(ApiContentEventInterface $event){};
- * @return void
- */ 
-Bootstrap->apiContentEventListener->addEventClosureToList(\Closure $eventClosure): void
-```
-
-
-
-## DOCUMENTATION
+## DOCUMENTATION TECHNIQUE
 
 
 
@@ -211,10 +103,6 @@ Le projet est divisé en 3 sous projets:
     - Api
     - Router
     - Backoffice
-
-
-
-
 
 Api:
 
